@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诗词填空闯关 - 跟我学诗词</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #f5f0e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 500px;
+            text-align: center;
+        }
+
+            .game-box h2 {
+                color: #8b4513;
+                margin-bottom: 10px;
+            }
+
+        .progress {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .poem-line {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+            .poem-line .blank {
+                display: inline-block;
+                width: 60px;
+                border-bottom: 2px solid #8b4513;
+                margin: 0 5px;
+            }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+            .options button {
+                padding: 15px;
+                font-size: 18px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                background: white;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+                .options button:hover {
+                    border-color: #8b4513;
+                    background: #fef5e7;
+                }
+
+                .options button.correct {
+                    border-color: #27ae60;
+                    background: #d5f5e3;
+                    color: #27ae60;
+                }
+
+                .options button.wrong {
+                    border-color: #e74c3c;
+                    background: #fadbd8;
+                    color: #e74c3c;
+                }
+
+        .score {
+            font-size: 18px;
+            color: #8b4513;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 30px;
+            background-color: #8b4513;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-box">
+        <h2>📝 诗词填空闯关</h2>
+        <div class="progress" id="progress">第 1 题 / 共 5 题</div>
+        <div class="poem-line" id="poemLine"></div>
+        <div class="options" id="optionsContainer"></div>
+        <div class="score" id="scoreDisplay">得分：0</div>
+        <button class="btn-back" onclick="window.location.href='index.html'">返回首页</button>
+    </div>
+
+    <script>
+        // 题库数据
+        var questions = [
+            { line: "床前明___光，疑是地上霜。", answer: "月", options: ["日", "月", "星", "灯"] },
+            { line: "白日___山尽，黄河入海流。", answer: "依", options: ["依", "尽", "落", "西"] },
+            { line: "春眠不觉___，处处闻啼鸟。", answer: "晓", options: ["晓", "醒", "早", "明"] },
+            { line: "___禾日当午，汗滴禾下土。", answer: "锄", options: ["锄", "种", "割", "收"] },
+            { line: "举头望明___，低头思故乡。", answer: "月", options: ["月", "日", "星", "天"] }
+        ];
+
+        var currentQuestion = 0;
+        var score = 0;
+        var answered = false;
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                document.getElementById("poemLine").innerHTML = "<h3>🎉 闯关完成！</h3>";
+                document.getElementById("optionsContainer").innerHTML = "";
+                document.getElementById("progress").innerText = "全部完成";
+                document.getElementById("scoreDisplay").innerText = "总分：" + score + " / " + (questions.length * 10);
+                return;
+            }
+
+            answered = false;
+            var q = questions[currentQuestion];
+            document.getElementById("progress").innerText = "第 " + (currentQuestion + 1) + " 题 / 共 " + questions.length + " 题";
+
+            var lineHtml = q.line.replace("___", "<span class='blank'></span>");
+            document.getElementById("poemLine").innerHTML = lineHtml;
+
+            var optionsHtml = "";
+            for (var i = 0; i < q.options.length; i++) {
+                optionsHtml += "<button onclick='selectAnswer(this, \"" + q.options[i] + "\")'>" + q.options[i] + "</button>";
+            }
+            document.getElementById("optionsContainer").innerHTML = optionsHtml;
+        }
+
+        function selectAnswer(btn, userAnswer) {
+            if (answered) return;
+            answered = true;
+
+            var q = questions[currentQuestion];
+            var allButtons = document.querySelectorAll(".options button");
+
+            if (userAnswer === q.answer) {
+                btn.classList.add("correct");
+                score += 10;
+            } else {
+                btn.classList.add("wrong");
+                for (var i = 0; i < allButtons.length; i++) {
+                    if (allButtons[i].innerText === q.answer) {
+                        allButtons[i].classList.add("correct");
+                    }
+                }
+            }
+
+            document.getElementById("scoreDisplay").innerText = "得分：" + score;
+
+            setTimeout(function() {
+                currentQuestion++;
+                loadQuestion();
+            }, 1000);
+        }
+
+        // 页面加载时开始游戏
+        window.onload = function() {
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>
