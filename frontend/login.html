@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 - 跟我学诗词</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #f5f0e8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+
+            .login-box h2 {
+                text-align: center;
+                color: #8b4513;
+                margin-bottom: 30px;
+            }
+
+            .login-box input {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+
+            .login-box button {
+                width: 100%;
+                padding: 12px;
+                background-color: #8b4513;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+                .login-box button:hover {
+                    background-color: #a0522d;
+                }
+
+            .login-box .register-link {
+                text-align: center;
+                margin-top: 15px;
+                font-size: 14px;
+            }
+
+                .login-box .register-link a {
+                    color: #8b4513;
+                    text-decoration: none;
+                }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>跟我学诗词</h2>
+        <input type="text" id="username" placeholder="请输入用户名">
+        <input type="password" id="password" placeholder="请输入密码">
+        <button onclick="login()">登 录</button>
+        <div class="register-link">
+            还没有账号？<a href="register.html">立即注册</a>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username === "" || password === "") {
+                alert("用户名和密码不能为空！");
+                return;
+            }
+
+            alert("登录成功！欢迎，" + username);
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
